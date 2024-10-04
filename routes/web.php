@@ -23,6 +23,9 @@ Route::get('/dashboard', [CommunityLinkController::class, 'index'])
 ->middleware(['auth', 'verified'])
 ->name('dashboard');
 
+Route::post('/dashboard', [CommunityLinkController::class, 'store'])
+->middleware(['auth', 'verified']);
+
 Route::get('/contact', function () {
     return view('contact');
     
@@ -32,7 +35,6 @@ Route::get('/analytics', function () {
     return view('analytics');
     
 })->middleware(['auth', 'verified'])->name('analytics');
-
 
 
 Route::middleware('auth')->group(function () {
