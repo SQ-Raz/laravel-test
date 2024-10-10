@@ -20,20 +20,18 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [CommunityLinkController::class, 'index'])
-->middleware(['auth', 'verified'])
-->name('dashboard');
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::post('/dashboard', [CommunityLinkController::class, 'store'])
-->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified']);
 
 Route::get('/contact', function () {
     return view('contact');
-    
 })->middleware(['auth', 'verified'])->name('contact');
 
 Route::get('/analytics', function () {
     return view('analytics');
-    
 })->middleware(['auth', 'verified'])->name('analytics');
 
 
@@ -43,4 +41,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

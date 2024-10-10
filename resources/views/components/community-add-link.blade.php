@@ -4,7 +4,7 @@
         @csrf
         <div class="mb-4">
             <label for="title" class="block text-white font-medium">Title:</label>
-            <input type="text" id="title" name="title"
+            <input value="{{ old('title') }}" type="text" id="title" name="title"
                 class="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('title') is-invalid @enderror"
                 placeholder="What is the title of your article?">
 
@@ -15,12 +15,29 @@
 
         <div class="mb-4">
             <label for="link" class="block text-white font-medium">Link:</label>
-            <input type="text" id="link" name="link"
+            <input value="{{ old('link') }}" type="text" id="link" name="link"
                 class="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 placeholder="What is the URL?">
-            
-            @error('title')
+
+            @error('link')
             <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="Channel" class="block text-white font-medium">Channel:</label>
+            <select
+                class="@error('channel_id') is-invalid @enderror mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                name="channel_id">
+                <option selected disabled>Pick a Channel...</option>
+                @foreach ($channels as $channel)
+                <option value="{{ $channel->id }}" {{ old('channel_id') == $channel->id ? 'selected' : '' }}>
+                    {{ $channel->title }}
+                </option>
+                @endforeach
+            </select>
+            @error('channel_id')
+            <span class="text-red-500 mt-2">{{ $message }}</span>
             @enderror
         </div>
 
