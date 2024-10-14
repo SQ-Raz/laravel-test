@@ -8,9 +8,10 @@
     <div class="py-12 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                
                 <x-community-links :links="$links" />
 
-                <!-- Community Add Link (occupies 1/4 of the grid in large screens) -->
+
                 <div class="lg:col-span-1">
                     <x-community-add-link :channels="$channels" />
                 </div>
