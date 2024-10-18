@@ -31,7 +31,7 @@
                 name="channel_id">
                 <option selected disabled>Pick a Channel...</option>
                 @foreach ($channels as $channel)
-                <option value="{{ $channel->id }}" {{ old('channel_id') == $channel->id ? 'selected' : '' }}>
+                <option value="{{ $channel->id }}" {{ old('channel_id') ==  $channel->id ? 'selected' : '' }}>
                     {{ $channel->title }}
                 </option>
                 @endforeach
@@ -40,6 +40,7 @@
             <span class="text-red-500 mt-2">{{ $message }}</span>
             @enderror
         </div>
+
 
         <div class="pt-3">
             <button type="submit"

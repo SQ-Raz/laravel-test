@@ -12,6 +12,8 @@ class CommunityLink extends Model
         'channel_id',
         'title',
         'link',
+        'user_id',
+        'approved',
     ];
 
     public function creator()

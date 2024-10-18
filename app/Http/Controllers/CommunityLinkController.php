@@ -6,6 +6,7 @@ use App\Models\Channel;
 use App\Models\CommunityLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CommunityLinkForm;
 
 class CommunityLinkController extends Controller
 {
@@ -30,21 +31,24 @@ class CommunityLinkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommunityLinkForm  $request)
     {
-        $data = $request->validate([
-            'title' => 'required|max:255',
-            'link' => 'required|unique:community_links|url|max:255',
-            'channel_id' => 'required|exists:channels,id',
-        ]);
+        $data = $request->validated();
 
         $link = new CommunityLink($data);
         // Si uso CommunityLink::create($data) tengo que declarar user_id y channel_id como $fillable
         $link->user_id = Auth::id();
         $link->approved = Auth::user()->trusted ?? false;
         $link->save();
-        return back();
+
+        // Redireccionar con mensaje flash
+        if ($link->approved) {
+            return redirect('/dashboard')->with('status', 'Tu link ha sido aprobado automáticamente.');
+        } else {
+            return redirect('/dashboard')->with('status', 'Tu link está pendiente de aprobación.');
+        }
     }
+
     /**
      * Display the specified resource.
      */
