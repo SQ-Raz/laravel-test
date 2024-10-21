@@ -24,19 +24,15 @@ class CommunityLinkForm extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'link' => 'required|unique:community_links|url|max:255',
-            'channel_id' => 'required|exists:channels,id',
+            'link' => 'required|url|max:255',
+            'channel_id' => 'required|exists:channels,id'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'channel_id.required' => 'You have to select a channel.',
-            'title.required' => 'The title is required.',
-            'link.required' => 'The link is required.',
-            'link.unique' => 'This link has already been submitted.',
-            'link.url' => 'Please enter a valid URL.',
+            'channel_id.required' => 'You have to select a channel.'
         ];
     }
 }

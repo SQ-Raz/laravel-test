@@ -15,7 +15,7 @@ class CommunityLinkController extends Controller
      */
     public function index()
     {
-        $links = CommunityLink::where('approved', 1)->paginate(25);
+        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(10);
         $channels = Channel::orderBy('title', 'asc')->get();
         return view('dashboard', compact('links', 'channels'));
     }
@@ -32,7 +32,7 @@ class CommunityLinkController extends Controller
      */
     public function create()
     {
-        $links = CommunityLink::where('approved', 1)->paginate(10);
+        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(10);
         $channels = Channel::orderBy('title', 'asc')->get();  
         return view('my-links', compact('links', 'channels'));
     }
@@ -47,6 +47,10 @@ class CommunityLinkController extends Controller
         $link = new CommunityLink($data);
         // Si uso CommunityLink::create($data) tengo que declarar user_id y channel_id como $fillable
         $link->user_id = Auth::id();
+        if ($link->hasAlreadyBeenSubmitted()) {
+            // Si ya ha sido enviado, redirigir con un mensaje flash (manejado dentro del método)
+            return redirect('/dashboard');
+        }
         $link->approved = Auth::user()->trusted ?? false;
         $link->save();
 
@@ -54,7 +58,7 @@ class CommunityLinkController extends Controller
         if ($link->approved) {
             return redirect('/dashboard')->with('status', 'Tu link ha sido aprobado automáticamente.');
         } else {
-            return redirect('/dashboard')->with('status', 'Tu link está pendiente de aprobación.');
+            return redirect('/dashboard')->with('info', 'Tu link está pendiente de aprobación.');
         }
     }
 
