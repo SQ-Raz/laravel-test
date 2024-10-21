@@ -10,12 +10,21 @@
         @foreach ($links as $link)
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 sm:rounded-lg mb-6">
             <div class="p-6 text-gray-900 dark:text-gray-100">
+                <!-- Muestra el título del canal -->
                 <span class="inline-block px-2 py-1 text-white text-sm font-semibold rounded"
                     style="background-color: {{ $link->channel->color }}">
                     {{ $link->channel->title }}
                 </span>
+
+                <!-- Título del link y contribuidor -->
                 {{$link->title}}
                 <small>Contributed by: {{$link->creator->name}} {{$link->updated_at->diffForHumans()}}</small>
+
+                <!-- Mostrar si el enlace está aprobado o pendiente -->
+                <span class="inline-block px-2 py-1 text-white text-sm font-semibold rounded"
+                    style="background-color: {{ $link->approved ? 'green' : 'red' }}">
+                    {{ $link->approved ? 'Aprobado' : 'Pendiente' }}
+                </span>
             </div>
         </div>
         @endforeach
@@ -24,7 +33,3 @@
         </div>
     </div>
 @endif
-
-
-
-

@@ -30,9 +30,9 @@ Route::get('/contact', function () {
     return view('contact');
 })->middleware(['auth', 'verified'])->name('contact');
 
-Route::get('/analytics', function () {
-    return view('analytics');
-})->middleware(['auth', 'verified'])->name('analytics');
+
+Route::get('/my-links', [CommunityLinkController::class, 'myLinks'])
+->middleware(['auth', 'verified'])->name('my-links');
 
 
 Route::middleware('auth')->group(function () {
