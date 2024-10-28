@@ -13,9 +13,21 @@ class CommunityLinkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Channel $channel = null)
     {
-        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(10);
+        if ($channel) {
+            // Usar la relación hasMany para obtener los links aprobados del canal seleccionado
+            $links = $channel->allLinks()
+                ->where('approved', true)
+                ->latest('updated_at')
+                ->paginate(10);
+        } else {
+            // Mostrar todos los links aprobados si no hay un canal seleccionado
+            $links = CommunityLink::where('approved', true)
+                ->latest('updated_at')
+                ->paginate(10);
+        }
+        //canales de drop dow ordenos en asc
         $channels = Channel::orderBy('title', 'asc')->get();
         return view('dashboard', compact('links', 'channels'));
     }
@@ -27,19 +39,13 @@ class CommunityLinkController extends Controller
         return view('my-links', compact('links'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(10);
-        $channels = Channel::orderBy('title', 'asc')->get();  
+        $channels = Channel::orderBy('title', 'asc')->get();
         return view('my-links', compact('links', 'channels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CommunityLinkForm  $request)
     {
         $data = $request->validated();
