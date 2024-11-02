@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommunityLinkController;
+use App\Http\Controllers\CommunityLinkUserController;
+use App\Models\CommunityLink;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('dashboard/{channel:slug}',[CommunityLinkController::class, 'index']);
+Route::get('dashboard/{channel:slug}',[CommunityLinkController::class, 'index']) 
+->middleware(['auth', 'verified']);
+
+Route::post('/votes/{link}', [CommunityLinkUserController::class, 'store'])
+->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

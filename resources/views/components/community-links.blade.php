@@ -28,12 +28,22 @@
                 {{ $link->approved ? 'Aprobado' : 'Pendiente' }}
             </span>
 
-            <!-- Mostrar el número de votos -->
-            <div class="mt-4">
+            <!-- Mostrar el número de votos y formulario de votación -->
+            <div class="mt-4 flex items-center space-x-2">
                 <span class="inline-block px-2 py-1 text-white text-sm font-semibold rounded border border-gray-300"
                     style="background-color: rgba(0, 0, 0, 0.6);"> <!-- Fondo oscuro para mejor contraste -->
                     Votos: {{ $link->users()->count() }}
                 </span>
+
+                <!-- Formulario de votación -->
+                <form method="POST" action="/votes/{{$link->id}}">
+                    @csrf
+                    <button type="submit" 
+                        class="px-4 py-2 rounded text-white {{ Auth::check() && Auth::user()->votedFor($link) ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-500 hover:bg-gray-600' }} disabled:opacity-50"
+                        {{ !Auth::user()->isTrusted() ? 'disabled' : '' }}>
+                        Votar
+                    </button>
+                </form>
             </div>
         </div>
     </div>

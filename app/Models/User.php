@@ -50,8 +50,20 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CommunityLink::class);
     }
 
-    public function isTrusted(){
+    public function isTrusted()
+    {
         return $this->trusted;
     }
 
+    public function votes()
+    {
+        return $this->belongsToMany(CommunityLink::class, 'community_link_users');
+    }
+
+
+    public function votedFor(CommunityLink $link)
+
+    {
+        return $this->votes->contains($link);
+    }
 }
