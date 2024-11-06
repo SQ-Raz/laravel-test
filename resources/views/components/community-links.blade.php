@@ -11,12 +11,13 @@
     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 sm:rounded-lg mb-6 p-6">
         <div class="text-gray-900 dark:text-gray-100">
             <!-- Muestra el título del canal -->
-            <a href="/dashboard/{{ $link->channel->slug }}"> 
+            <a href="/dashboard/{{ request()->exists('popular') ? $link->channel->slug . '?popular=true' : $link->channel->slug }}">
                 <span class="inline-block px-2 py-1 text-white text-sm font-semibold rounded"
                     style="background-color: {{ $link->channel->color }};">
                     {{ $link->channel->title }}
-                </span> 
+                </span>
             </a>
+
 
             <!-- Título del link y contribuidor -->
             <h2 class="mt-2 text-lg font-semibold">{{$link->title}}</h2>
@@ -38,7 +39,7 @@
                 <!-- Formulario de votación -->
                 <form method="POST" action="/votes/{{$link->id}}">
                     @csrf
-                    <button type="submit" 
+                    <button type="submit"
                         class="px-4 py-2 rounded text-white {{ Auth::check() && Auth::user()->votedFor($link) ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-500 hover:bg-gray-600' }} disabled:opacity-50"
                         {{ !Auth::user()->isTrusted() ? 'disabled' : '' }}>
                         Votar
@@ -49,7 +50,7 @@
     </div>
     @endforeach
     <div class="mt-4">
-        {{$links->links()}}
+        {{ $links->appends($_GET)->links() }}
     </div>
 </div>
 @endif

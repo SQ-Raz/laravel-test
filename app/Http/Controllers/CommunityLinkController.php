@@ -7,35 +7,33 @@ use App\Models\CommunityLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CommunityLinkForm;
+use App\Queries\CommunityLinkQuery;
+
 
 class CommunityLinkController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Channel $channel = null)
-    {
-        if ($channel) {
-            // Usar la relación hasMany para obtener los links aprobados del canal seleccionado
-            $links = $channel->allLinks()
-                ->where('approved', true)
-                ->latest('updated_at')
-                ->paginate(10);
-        } else {
-            // Mostrar todos los links aprobados si no hay un canal seleccionado
-            $links = CommunityLink::where('approved', true)
-                ->latest('updated_at')
-                ->paginate(10);
-        }
-        //canales de drop dow ordenos en asc
-        $channels = Channel::orderBy('title', 'asc')->get();
-        return view('dashboard', compact('links', 'channels'));
+public function index(CommunityLinkQuery $query, Channel $channel = null)
+{
+    // Obtener enlaces en función de si se solicita "popular" o si hay un canal específico
+    if (request()->exists('popular')) {
+        $links = $channel ? $query->getMostPopularByChannel($channel) : $query->getMostPopular();
+    } else {
+        $links = $channel ? $query->getByChannel($channel) : $query->getAll();
     }
+
+    // Obtener canales ordenados para el menú desplegable
+    $channels = Channel::orderBy('title', 'asc')->get();
+    
+    return view('dashboard', compact('links', 'channels'));
+}
+
 
     public function myLinks()
     {
-        $user = Auth::user();
-        $links = $user->myLinks()->paginate(10);
+        $links = Auth::user()->myLinks()->paginate(10);
         return view('my-links', compact('links'));
     }
 
