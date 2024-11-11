@@ -2,69 +2,56 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements MustVerifyEmail
-
+/**
+ * Class User
+ *
+ * @property $id
+ * @property $name
+ * @property $email
+ * @property $email_verified_at
+ * @property $password
+ * @property $image
+ * @property $remember_token
+ * @property $created_at
+ * @property $updated_at
+ * @property $trusted
+ *
+ * @property CommunityLinkUser[] $communityLinkUsers
+ * @property CommunityLink[] $communityLinks
+ * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    
+
+    protected $perPage = 20;
 
     /**
-     * The attributes that are mass assignable.
+     * Attributes that should be mass-assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'image',
-        
-    ];
+    protected $fillable = ['name', 'email', 'image', 'trusted'];
+
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
+    public function communityLinkUsers()
+    {
+        return $this->hasMany(\App\Models\CommunityLinkUser::class, 'id', 'user_id');
+    }
+    
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    public function myLinks()
+    public function communityLinks()
     {
-        return $this->hasMany(CommunityLink::class);
+        return $this->hasMany(\App\Models\CommunityLink::class, 'id', 'user_id');
     }
+    
 
-    public function isTrusted()
-    {
-        return $this->trusted;
-    }
-
-    public function votes()
-    {
-        return $this->belongsToMany(CommunityLink::class, 'community_link_users');
-    }
-
-
-    public function votedFor(CommunityLink $link)
-
-    {
-        return $this->votes->contains($link);
-    }
 }
