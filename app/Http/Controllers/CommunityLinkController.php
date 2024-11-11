@@ -15,20 +15,25 @@ class CommunityLinkController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index(CommunityLinkQuery $query, Channel $channel = null)
-{
-    // Obtener enlaces en función de si se solicita "popular" o si hay un canal específico
-    if (request()->exists('popular')) {
-        $links = $channel ? $query->getMostPopularByChannel($channel) : $query->getMostPopular();
-    } else {
-        $links = $channel ? $query->getByChannel($channel) : $query->getAll();
-    }
+    public function index(CommunityLinkQuery $query, Channel $channel = null)
+    {
+        $searchTerm = request()->get('query'); // Obtener el término de búsqueda
 
-    // Obtener canales ordenados para el menú desplegable
-    $channels = Channel::orderBy('title', 'asc')->get();
-    
-    return view('dashboard', compact('links', 'channels'));
-}
+        // Obtener enlaces en función de si se solicita "popular" o si hay un canal específico
+        if (request()->exists('popular')) {
+            $links = $channel ? $query->getMostPopularByChannel($channel) : $query->getMostPopular();
+        } elseif ($searchTerm) {
+            // Si hay un término de búsqueda, utiliza el método search
+            $links = $query->search($searchTerm);
+        } else {
+            $links = $channel ? $query->getByChannel($channel) : $query->getAll();
+        }
+
+        // Obtener canales ordenados para el menú desplegable
+        $channels = Channel::orderBy('title', 'asc')->get();
+
+        return view('dashboard', compact('links', 'channels'));
+    }
 
 
     public function myLinks()
