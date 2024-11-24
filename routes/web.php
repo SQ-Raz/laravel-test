@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommunityLinkController;
 use App\Http\Controllers\CommunityLinkUserController;
+use App\Http\Controllers\UserController;
 use App\Models\CommunityLink;
 use Illuminate\Console\Command;
 
@@ -50,5 +51,11 @@ Route::get('dashboard/{channel:slug}',[CommunityLinkController::class, 'index'])
 
 Route::post('/votes/{link}', [CommunityLinkUserController::class, 'store'])
 ->middleware(['auth', 'verified']);
+
+
+Route::resource('users', UserController::class)
+->middleware(['auth', 'verified']);
+
+
 
 require __DIR__ . '/auth.php';
