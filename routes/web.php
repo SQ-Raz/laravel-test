@@ -52,7 +52,12 @@ Route::get('dashboard/{channel:slug}',[CommunityLinkController::class, 'index'])
 Route::post('/votes/{link}', [CommunityLinkUserController::class, 'store'])
 ->middleware(['auth', 'verified']);
 
-Route::resource('users', UserController::class);
+
+
+Route::resource('users', UserController::class)
+->middleware(['auth', 'verified']);
+
+
 
 
 require __DIR__ . '/auth.php';
