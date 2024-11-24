@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -52,10 +53,12 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <a href="{{ route('users.destroy', $user->id) }}" class="text-red-600 font-bold hover:text-red-900" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">{{ __('Delete') }}</a>
+
                                                 </form>
                                             </td>
                                         </tr>
                                     @endforeach
+
                                     </tbody>
                                 </table>
 
@@ -70,3 +73,4 @@
         </div>
     </div>
 </x-app-layout>
+

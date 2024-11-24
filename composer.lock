@@ -4,7 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+
     "content-hash": "417a0f716228184db551c4bfc44052fe",
+
     "packages": [
         {
             "name": "brick/math",
@@ -5853,6 +5855,7 @@
         },
         {
             "name": "ibex/crud-generator",
+
             "version": "v2.1.1",
             "source": {
                 "type": "git",
@@ -5868,6 +5871,7 @@
             "require": {
                 "laravel/framework": "^10.30|^11.0",
                 "php": "^8.2"
+
             },
             "type": "library",
             "extra": {
@@ -5892,20 +5896,24 @@
                     "email": "asargodha@gmail.com"
                 }
             ],
+
             "description": "Laravel CRUD Generator",
             "keywords": [
                 "alpine js",
+
                 "bootstrap css",
                 "crud",
                 "crud generator",
                 "laravel",
                 "laravel crud generator",
+
                 "laravel package",
                 "tailwind css"
             ],
             "support": {
                 "issues": "https://github.com/awais-vteams/laravel-crud-generator/issues",
                 "source": "https://github.com/awais-vteams/laravel-crud-generator/tree/v2.1.1"
+
             },
             "funding": [
                 {
@@ -5917,7 +5925,9 @@
                     "type": "ko_fi"
                 }
             ],
+
             "time": "2024-06-11T04:27:58+00:00"
+
         },
         {
             "name": "laravel/pint",

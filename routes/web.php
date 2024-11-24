@@ -53,8 +53,10 @@ Route::post('/votes/{link}', [CommunityLinkUserController::class, 'store'])
 ->middleware(['auth', 'verified']);
 
 
+
 Route::resource('users', UserController::class)
 ->middleware(['auth', 'verified']);
+
 
 
 
