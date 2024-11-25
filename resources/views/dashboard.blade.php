@@ -8,6 +8,11 @@
         </h2>
 
         <ul class="flex space-x-4 mt-4">
+
+            @if (session('token'))
+            <p>Token: {{ session('token') }}</p>
+            @endif
+    
             <li>
                 <a class="px-4 py-2 rounded-lg {{ request()->exists('popular') ? 'text-blue-500 hover:text-blue-700' : 'text-gray-500 cursor-not-allowed' }}"
                     href="{{ route('dashboard', ['channel' => request('channel')]) }}">
