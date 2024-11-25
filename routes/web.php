@@ -57,5 +57,4 @@ Route::resource('users', UserController::class)
 ->middleware('can:administrate,App\Models\User');
 
 
-
 require __DIR__ . '/auth.php';
